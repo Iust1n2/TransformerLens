@@ -17,7 +17,6 @@ def vanilla_addmm(
     """
     return torch.addmm(input, mat1, mat2)
 
-
 def batch_addmm(
     bias: Float[torch.Tensor, "... #d_out"],  # Must be broadcastable to "... d_out"
     weight: Float[torch.Tensor, "d_in d_out"],

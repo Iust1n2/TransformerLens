@@ -216,14 +216,20 @@ class HookedRootModule(nn.Module):
         """
         self.mod_dict = {}
         self.hook_dict = {}
+
         for name, module in self.named_modules():
             if name == "":
                 continue
             module.name = name
             self.mod_dict[name] = module
-            # TODO: is the bottom line the same as "if "HookPoint" in str(type(module)):"
+
+            # If module is HookPoint, add it to hook_dict
             if isinstance(module, HookPoint):
                 self.hook_dict[name] = module
+
+            # Recursively call setup_hooks if the module has it
+            if hasattr(module, "setup_hooks"):
+                module.setup_hooks(name)
 
     def hook_points(self):
         return self.hook_dict.values()
